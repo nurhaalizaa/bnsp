@@ -34,7 +34,7 @@
             </li>
         
             <li class="sidebar-item selected">
-              <a class="sidebar-link active" href="homepage.php" aria-expanded="false">
+              <a class="sidebar-link active" href="index.php" aria-expanded="false">
                 <span>
                   <i class="ti ti-layout-dashboard"></i>
                 </span>
