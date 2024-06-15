@@ -1,5 +1,6 @@
 
 <?php
+require '../koneksi.php'; 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../login.php'); 
@@ -140,19 +141,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 <div class="card">
                 <div class="card-body p-4">
                 <?php
-                    $dsn = 'mysql:host=localhost;dbname=proevent';
-                    $username = 'root';
-                    $password = '';
                     $id_peserta = $_GET['id']; // Ambil ID peserta dari parameter URL
 
                     try {
-                        // Koneksi ke database menggunakan PDO
-                        $pdo = new PDO($dsn, $username, $password);
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                         // Query untuk mengambil nama peserta berdasarkan ID
                         $sql = "SELECT nama FROM user WHERE id = :id_peserta";
-                        $stmt = $pdo->prepare($sql);
+                        $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':id_peserta', $id_peserta);
                         $stmt->execute();
                         $peserta = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -179,16 +173,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                       <tr>
                       <?php
                         try {
-                            // Koneksi ke database menggunakan PDO
-                            $pdo = new PDO($dsn, $username, $password);
-                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                             // Query untuk mengambil data kegiatan yang diikuti oleh peserta dengan ID tertentu
                             $sql = "SELECT event.id, event.judul, event.tanggal, registrations.status, registrations.id AS registration_id
                                     FROM event
                                     INNER JOIN registrations ON event.id = registrations.event_id
                                     WHERE registrations.user_id = :id_peserta";
-                            $stmt = $pdo->prepare($sql);
+                            $stmt = $conn->prepare($sql);
                             $stmt->bindParam(':id_peserta', $id_peserta);
                             $stmt->execute();
 

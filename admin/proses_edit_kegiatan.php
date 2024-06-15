@@ -1,4 +1,5 @@
 <?php
+require '../koneksi.php'; 
 // Periksa apakah metode yang digunakan adalah POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil data dari form
@@ -44,17 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Jika semua pemeriksaan lolos, upload file
             if (move_uploaded_file($_FILES["fotoKegiatan"]["tmp_name"], $target_file)) {
-                // Ubah data kegiatan di database, termasuk foto baru
-                $dsn = 'mysql:host=localhost;dbname=proevent';
-                $username = 'root';
-                $password = '';
                 try {
-                    $pdo = new PDO($dsn, $username, $password);
-                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                     // Update data kegiatan
                     $sql = "UPDATE event SET judul = :judul, deskripsi = :deskripsi, tanggal = :tanggal, waktu = :waktu, lokasi = :lokasi, kapasitas = :kapasitas, foto = :foto WHERE id = :id";
-                    $stmt = $pdo->prepare($sql);
+                    $stmt = $conn->prepare($sql);
                     $stmt->execute(['judul' => $judul, 'deskripsi' => $deskripsi, 'tanggal' => $tanggal, 'waktu' => $waktu, 'lokasi' => $lokasi, 'kapasitas' => $kapasitas, 'foto' => $target_file, 'id' => $id]);
 
                     echo "<script>alert('Data Kegiatan Berhasil Diupdate');</script>";
@@ -68,16 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // Jika tidak ada perubahan pada foto, hanya perbarui data lainnya
-        $dsn = 'mysql:host=localhost;dbname=proevent';
-        $username = 'root';
-        $password = '';
         try {
-            $pdo = new PDO($dsn, $username, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
             // Update data kegiatan tanpa foto
             $sql = "UPDATE event SET judul = :judul, deskripsi = :deskripsi, tanggal = :tanggal, waktu = :waktu, lokasi = :lokasi, kapasitas = :kapasitas WHERE id = :id";
-            $stmt = $pdo->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->execute(['judul' => $judul, 'deskripsi' => $deskripsi, 'tanggal' => $tanggal, 'waktu' => $waktu, 'lokasi' => $lokasi, 'kapasitas' => $kapasitas, 'id' => $id]);
 
             echo "<script>alert('Data Kegiatan Berhasil Diupdate');</script>";

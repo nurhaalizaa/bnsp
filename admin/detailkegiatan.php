@@ -1,4 +1,5 @@
 <?php
+require '../koneksi.php'; 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../login.php'); 
@@ -132,18 +133,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <div class="card-body">
                 <h5 class="card-title fw-semibold mb-4">Detail Kegiatan</h5>
                 <?php
-                    $dsn = 'mysql:host=localhost;dbname=proevent';
-                    $username = 'root';
-                    $password = '';
                     $id = $_GET['id'];
 
                     try {
-                        // Koneksi ke database menggunakan PDO
-                        $pdo = new PDO($dsn, $username, $password);
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                         // Query untuk mengambil data kegiatan berdasarkan ID
-                        $stmt = $pdo->prepare("SELECT * FROM event WHERE id = :id");
+                        $stmt = $conn->prepare("SELECT * FROM event WHERE id = :id");
                         $stmt->bindParam(':id', $id);
                         $stmt->execute();
 

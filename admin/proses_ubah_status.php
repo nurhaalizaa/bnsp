@@ -1,22 +1,15 @@
 <?php
-$dsn = 'mysql:host=localhost;dbname=proevent';
-$username = 'root';
-$password = '';
-// $id_peserta = $_GET['id'];
+require '../koneksi.php'; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        // Koneksi ke database menggunakan PDO
-        $pdo = new PDO($dsn, $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         // Ambil data yang dikirimkan melalui formulir
         $id_registration = $_POST['id_registration'];
         $status = $_POST['status'];
 
         // Query untuk mengubah status kehadiran peserta
         $sql = "UPDATE registrations SET status = :status WHERE id = :id_registration";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $conn->prepare($sql);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':id_registration', $id_registration);
         $stmt->execute();

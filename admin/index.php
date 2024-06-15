@@ -1,4 +1,5 @@
 <?php
+require '../koneksi.php'; 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../login.php'); 
@@ -73,12 +74,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 <span class="hide-menu">Daftar Peserta</span>
               </a>
             </li>
-            
-
-            
-
-
-
           </ul>
 
         </nav>
@@ -121,7 +116,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    <a href="../logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
                 </div>
               </li>
@@ -137,52 +132,45 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         <div class="card-body">
             <h5 class="card-title fw-semibold mb-4">Daftar Kegiatan</h5>
             <div class="card">
-                <div class="card-body p-4">
-                    <div class="row">
-                    <?php
-                        $dsn = 'mysql:host=localhost;dbname=proevent';
-                        $username = 'root';
-                        $password = '';
-                        $pdo = new PDO($dsn, $username, $password);
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $stmt = $pdo->query("SELECT * FROM event LIMIT 6");
+            <div class="card-body p-4">
+              <div class="row">
+              <?php
+                  $stmt = $conn->query("SELECT * FROM event LIMIT 6");
 
-                        // Loop melalui setiap baris data kegiatan
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            ?>
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                    <img src="<?php echo $row['foto']; ?>" class="card-img-top" alt="Foto Peserta">
+                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+              ?>
+              <div class="col-md-4 mb-4">
+                  <div class="card">
+                      <div class="card-body">
+                          <img src="<?php echo $row['foto']; ?>" class="card-img-top" alt="Foto Peserta">
+                          <h5 class="card-title"><?php echo $row['judul']; ?></h5>
+                          <p class="card-text"><?php echo $row['deskripsi']; ?></p>
+                          <p class="card-text">Tanggal: <?php echo $row['tanggal']; ?></p>
+                          <p class="card-text">Waktu: <?php echo $row['waktu']; ?></p>
+                          <p class="card-text">Lokasi: <?php echo $row['lokasi']; ?></p>
+                          <p class="card-text">Kapasitas: <?php echo $row['kapasitas']; ?></p>
+                      </div>
+                  </div>
+              </div>
+          <?php } ?>
+          </div>
+          <a href='daftarkegiatan.php' class='btn btn-secondary m-1'>See More</a>
+      </div>
 
-                                        <h5 class="card-title"><?php echo $row['judul']; ?></h5>
-                                        <p class="card-text"><?php echo $row['deskripsi']; ?></p>
-                                        <p class="card-text">Tanggal: <?php echo $row['tanggal']; ?></p>
-                                        <p class="card-text">Waktu: <?php echo $row['waktu']; ?></p>
-                                        <p class="card-text">Lokasi: <?php echo $row['lokasi']; ?></p>
-                                        <p class="card-text">Kapasitas: <?php echo $row['kapasitas']; ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </div>
-                    <a href='daftarkegiatan.php' class='btn btn-secondary m-1'>See More</a>
-                </div>
             </div>
             <h5 class="card-title fw-semibold mb-4">Daftar Peserta</h5>
               <div class="card">
                   <div class="card-body p-4">
                       <div class="row">
                           <?php
-                          // Query untuk mengambil maksimal 8 peserta dari database
-                          $stmt = $pdo->query("SELECT * FROM user LIMIT 6");
+                          $stmt = $conn->query("SELECT * FROM user LIMIT 6");
 
                           // Loop melalui setiap baris data peserta
                           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                               ?>
                               <div class="col-md-3 mb-4">
                                   <div class="card">
-                                      <img src="<?php echo $row['foto']; ?>" class="card-img-top" alt="Foto Peserta">
+                                      <img src="<?php echo 'uploads/'.$row['foto']; ?>" class="card-img-top" alt="Foto Peserta">
                                       <div class="card-body">
                                           <h5 class="card-title"><?php echo $row['nama']; ?></h5>
                                           <p class="card-text">Email: <?php echo $row['email']; ?></p>

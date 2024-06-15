@@ -42,7 +42,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded active" href="pengumuman.php">MyEvent</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="about.php">About</a></li>
                         <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Pengumuman</a></li> -->
-                        <form action="" method="post">
+                        <form action="../logout.php" method="post">
                             <button class="nav-link py-3 px-0 px-lg-3 rounded">
                                 Logout
                             </button>

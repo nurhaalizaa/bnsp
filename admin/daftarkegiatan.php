@@ -1,4 +1,5 @@
 <?php
+require '../koneksi.php'; 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../login.php'); 
@@ -123,7 +124,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    <a href="../logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
                 </div>
               </li>
@@ -156,20 +157,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                     <tbody>
                     <?php
                         // Koneksi ke database
-                        $dsn = 'mysql:host=localhost;dbname=proevent';
-                        $username = 'root';
-                        $password = '';
 
                         try {
-                            $pdo = new PDO($dsn, $username, $password);
-                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                             // Query untuk mengambil data kegiatan beserta jumlah pendaftar
                             $sql = "SELECT event.id, event.judul, event.tanggal, event.foto, COUNT(registrations.id) AS jumlah_pendaftar
                                     FROM event
                                     LEFT JOIN registrations ON event.id = registrations.event_id
                                     GROUP BY event.id, event.judul, event.tanggal";
-                            $stmt = $pdo->query($sql);
+                            $stmt = $conn->query($sql);
 
                             // Tampilkan data dalam tabel HTML
                             echo "<tbody>";

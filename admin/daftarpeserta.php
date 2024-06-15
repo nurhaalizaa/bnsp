@@ -1,4 +1,5 @@
 <?php
+require '../koneksi.php'; 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../login.php'); 
@@ -156,18 +157,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                     <tbody>
                       <tr>
                       <?php
-                        $dsn = 'mysql:host=localhost;dbname=proevent';
-                        $username = 'root';
-                        $password = '';
-
                         try {
-                            // Koneksi ke database menggunakan PDO
-                            $pdo = new PDO($dsn, $username, $password);
-                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                             // Query untuk mengambil data peserta
                             $sql = "SELECT * FROM user";
-                            $stmt = $pdo->query($sql);
+                            $stmt = $conn->query($sql);
 
                             // Tampilkan data dalam tabel HTML
                             echo "<tbody>";
@@ -181,7 +174,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                 echo "<td>" . $row['no_hp'] . "</td>";
                                 echo "<td>" . $row['alamat'] . "</td>";
                                 // Menghitung jumlah kegiatan yang diikuti oleh peserta, Anda harus mengganti "user_id" dengan kolom yang sesuai di tabel pendaftaran
-                                $stmt_kegiatan = $pdo->prepare("SELECT COUNT(*) FROM registrations WHERE user_id = :user_id");
+                                $stmt_kegiatan = $conn->prepare("SELECT COUNT(*) FROM registrations WHERE user_id = :user_id");
                                 $stmt_kegiatan->bindParam(':user_id', $row['id']);
                                 $stmt_kegiatan->execute();
                                 $jumlah_kegiatan = $stmt_kegiatan->fetchColumn();

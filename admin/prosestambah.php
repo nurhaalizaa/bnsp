@@ -1,4 +1,5 @@
 <?php
+require '../koneksi.php'; 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil data dari form
     $judul = $_POST['judulKegiatan'];
@@ -41,17 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Jika semua pemeriksaan lolos, upload file
         if (move_uploaded_file($_FILES["fotoKegiatan"]["tmp_name"], $target_file)) {
-            // Koneksi ke database
-            $dsn = 'mysql:host=localhost;dbname=proevent';
-            $username = 'root';
-            $password = '';
             try {
-                $pdo = new PDO($dsn, $username, $password);
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                 // Masukkan data ke database
                 $sql = "INSERT INTO event (judul, deskripsi, tanggal, waktu, lokasi, kapasitas, foto) VALUES (:judul, :deskripsi, :tanggal, :waktu, :lokasi, :kapasitas, :foto)";
-                $stmt = $pdo->prepare($sql);
+                $stmt = $conn->prepare($sql);
                 $stmt->execute(['judul' => $judul, 'deskripsi' => $deskripsi, 'tanggal' => $tanggal, 'waktu' => $waktu, 'lokasi' => $lokasi, 'kapasitas' => $kapasitas, 'foto' => $target_file]);
 
                 // echo "<script>alert('Data Berhasil Ditambahkan');</script>";
