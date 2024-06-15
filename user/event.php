@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>ProEvent</title>
+        <title>ProEvent | User</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/img/1.png" />
         <!-- Font Awesome icons (free version)-->

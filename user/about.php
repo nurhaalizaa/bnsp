@@ -39,8 +39,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php">Beranda</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded " href="event.php">Event</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded active" href="pengumuman.php">MyEvent</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="about.php">About</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="pengumuman.php">MyEvent</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded active" href="about.php">About</a></li>
                         <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Pengumuman</a></li> -->
                         <form action="../logout.php" method="post">
                             <button class="nav-link py-3 px-0 px-lg-3 rounded">
@@ -53,62 +53,53 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
         </nav>
         <!-- Contact Section-->
         <section class="page-section">
-            <div class="container">
-                <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Daftar Kegiatan</h2>
-                <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- Contact Section Form-->
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 col-xl-7">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama Kegiatan</th>
-                                <th scope="col">Waktu</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Tempat</th>
-                                <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            try {
-                                $user_id = $_SESSION['user_id'];
-                                $stmt = $conn->prepare("SELECT e.id, e.judul, e.waktu, e.tanggal, e.lokasi, r.status
-                                                    FROM event e 
-                                                    INNER JOIN registrations r ON e.id = r.event_id
-                                                    WHERE r.user_id = :user_id");
-                                $stmt->bindParam(':user_id', $user_id);
-                                $stmt->execute();
+    <div class="container">
+        <!-- Contact Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Profil Saya</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Contact Section Form-->
+        <?php
+        $user_id = $_SESSION['user_id'];
 
-                                $i = 1;
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<tr>";
-                                    echo "<th scope='row'>{$i}</th>";
-                                    echo "<td>{$row['judul']}</td>";
-                                    echo "<td>{$row['waktu']}</td>";
-                                    echo "<td>{$row['tanggal']}</td>";
-                                    echo "<td>{$row['lokasi']}</td>";
-                                    echo "<td>{$row['status']}</td>";
-                                    echo "</tr>";
-                                    $i++;
-                                }
-                            } catch (PDOException $e) {
-                                echo "<tr><td colspan='6'>Error: " . $e->getMessage() . "</td></tr>";
-                            }
-                            ?>
-                            </tbody>
-                        </table>
+        // Query untuk mengambil informasi pribadi user dari database
+        $stmt = $conn->prepare("SELECT * FROM user WHERE id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Memastikan data user ditemukan
+        if (!$user) {
+            echo "Data user tidak ditemukan.";
+            exit();
+        }
+        ?>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <!-- Card -->
+                <div class="card">
+                        <div class="card-body text-center">
+                        <img src="<?php echo '../admin/uploads/'.$user['foto']; ?>" class="rounded-circle border border-5 border-black" style="width: 150px;">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><?php echo htmlspecialchars($user['nama']); ?></li>
+                                <li class="list-group-item"><?php echo htmlspecialchars($user['jenis_kelamin']); ?></li>
+                                <li class="list-group-item"><?php echo htmlspecialchars($user['email']); ?></li>
+                                <li class="list-group-item"><?php echo htmlspecialchars($user['no_hp']); ?></li>
+                                <li class="list-group-item"><?php echo htmlspecialchars($user['alamat']); ?></li>
+                            </ul>
+                            <a href="edit_profil.php" class="btn btn-primary mt-3">Edit Profil</a>
+                        </div>
                     </div>
-                </div>
+                <!-- End Card -->
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+
 
         
         <!-- Footer-->

@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hompage Admin</title>
+  <title>ProEvent | Admin</title>
   <link rel="shortcut icon" type="image/png" href="assets/images/logos/icon.png" />
   <link rel="stylesheet" href="assets/css/styles.min.css" />
 </head>
@@ -159,7 +159,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                       <?php
                         try {
                             // Query untuk mengambil data peserta
-                            $sql = "SELECT * FROM user";
+                            $sql = "SELECT * FROM user where role!='admin'";
                             $stmt = $conn->query($sql);
 
                             // Tampilkan data dalam tabel HTML

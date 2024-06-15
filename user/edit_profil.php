@@ -39,8 +39,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php">Beranda</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded " href="event.php">Event</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded active" href="pengumuman.php">MyEvent</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="about.php">About</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="pengumuman.php">MyEvent</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded active" href="about.php">About</a></li>
                         <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Pengumuman</a></li> -->
                         <form action="../logout.php" method="post">
                             <button class="nav-link py-3 px-0 px-lg-3 rounded">
@@ -53,62 +53,84 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
         </nav>
         <!-- Contact Section-->
         <section class="page-section">
-            <div class="container">
-                <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Daftar Kegiatan</h2>
-                <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- Contact Section Form-->
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 col-xl-7">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama Kegiatan</th>
-                                <th scope="col">Waktu</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Tempat</th>
-                                <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            try {
-                                $user_id = $_SESSION['user_id'];
-                                $stmt = $conn->prepare("SELECT e.id, e.judul, e.waktu, e.tanggal, e.lokasi, r.status
-                                                    FROM event e 
-                                                    INNER JOIN registrations r ON e.id = r.event_id
-                                                    WHERE r.user_id = :user_id");
-                                $stmt->bindParam(':user_id', $user_id);
-                                $stmt->execute();
+    <div class="container">
+        <!-- Contact Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Edit Profil</h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Contact Section Form-->
+        <?php
+        $user_id = $_SESSION['user_id'];
 
-                                $i = 1;
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<tr>";
-                                    echo "<th scope='row'>{$i}</th>";
-                                    echo "<td>{$row['judul']}</td>";
-                                    echo "<td>{$row['waktu']}</td>";
-                                    echo "<td>{$row['tanggal']}</td>";
-                                    echo "<td>{$row['lokasi']}</td>";
-                                    echo "<td>{$row['status']}</td>";
-                                    echo "</tr>";
-                                    $i++;
-                                }
-                            } catch (PDOException $e) {
-                                echo "<tr><td colspan='6'>Error: " . $e->getMessage() . "</td></tr>";
-                            }
-                            ?>
-                            </tbody>
-                        </table>
+        // Query untuk mengambil informasi pribadi user dari database
+        $stmt = $conn->prepare("SELECT * FROM user WHERE id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Memastikan data user ditemukan
+        if (!$user) {
+            echo "Data user tidak ditemukan.";
+            exit();
+        }
+        ?>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <!-- Card -->
+                <div class="card">
+                        <div class="card-body ">
+                        <form method="post" action="proses_edit.php" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label fw-semibold">Nama</label>
+                                    <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $user['nama']; ?>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="jenis_kelamin" class="form-label fw-semibold">Jenis Kelamin</label>
+                                    <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
+                                        <option value="laki-laki" <?php echo $user['jenis_kelamin'] == 'laki-laki' ? 'selected' : ''; ?>>Laki-laki</option>
+                                        <option value="perempuan" <?php echo $user['jenis_kelamin'] == 'perempuan' ? 'selected' : ''; ?>>Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label fw-semibold">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="no_hp" class="form-label fw-semibold">No HP</label>
+                                    <input type="text" class="form-control" id="no_hp" name="no_hp" value="<?php echo $user['no_hp']; ?>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="alamat" class="form-label fw-semibold">Alamat</label>
+                                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?php echo $user['alamat']; ?></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label fw-semibold">Password</label>
+                                    <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="foto" class="form-label fw-semibold">Foto Profil</label>
+                                    <input type="file" class="form-control" id="foto" name="foto">
+                                    <span><?php echo $user['foto']; ?></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="about.php" type="button" class="btn btn-secondary">Close</a>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                        </div>
                     </div>
-                </div>
+                <!-- End Card -->
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+
 
         
         <!-- Footer-->

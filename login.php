@@ -6,7 +6,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- <link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico"> -->
-    <title>Login</title>
+    <title>ProEvent</title>
+    <link rel="icon" href="assets/images/1.png"/>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
 
