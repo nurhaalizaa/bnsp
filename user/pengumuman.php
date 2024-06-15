@@ -1,5 +1,5 @@
 <?php
-
+include '../koneksi.php';
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
     header('Location: ../login.php'); 
@@ -65,23 +65,46 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                 <!-- Contact Section Form-->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
-                    <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nama Kegiatan</th>
-                    <th scope="col">Waktu</th>
-                    <th scope="col">Tanggal</th>
-                    <th scope="col">Tempat</th>
-                    <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        
-                    </tr>
-                </tbody>
-            </table>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nama Kegiatan</th>
+                                <th scope="col">Waktu</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Tempat</th>
+                                <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            try {
+                                $user_id = $_SESSION['user_id'];
+                                $stmt = $conn->prepare("SELECT e.id, e.judul, e.waktu, e.tanggal, e.lokasi, r.status
+                                                    FROM event e 
+                                                    INNER JOIN registrations r ON e.id = r.event_id
+                                                    WHERE r.user_id = :user_id");
+                                $stmt->bindParam(':user_id', $user_id);
+                                $stmt->execute();
+
+                                $i = 1;
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<tr>";
+                                    echo "<th scope='row'>{$i}</th>";
+                                    echo "<td>{$row['judul']}</td>";
+                                    echo "<td>{$row['waktu']}</td>";
+                                    echo "<td>{$row['tanggal']}</td>";
+                                    echo "<td>{$row['lokasi']}</td>";
+                                    echo "<td>{$row['status']}</td>";
+                                    echo "</tr>";
+                                    $i++;
+                                }
+                            } catch (PDOException $e) {
+                                echo "<tr><td colspan='6'>Error: " . $e->getMessage() . "</td></tr>";
+                            }
+                            ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

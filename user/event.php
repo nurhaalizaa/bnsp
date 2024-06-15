@@ -63,66 +63,67 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                 </div>
                 <!-- Portfolio Grid Items-->
                 <div class="row justify-content-center">
-                <?php
+                    <?php
                     try {
-                        $stmt = $conn->query("SELECT e.id, e.judul, e.lokasi, e.tanggal, e.kapasitas, COUNT(r.event_id) AS jumlah_pendaftar, e.kapasitas - COUNT(r.event_id) AS kapasitas_tersedia,e.deskripsi, e.foto FROM event e LEFT JOIN registrations r ON e.id = r.event_id AND r.status = 'diterima' GROUP BY e.id");
+                        $stmt = $conn->query("SELECT e.id, e.judul, e.lokasi, e.tanggal, e.kapasitas, COUNT(r.event_id) AS jumlah_pendaftar, e.kapasitas - COUNT(r.event_id) AS kapasitas_tersedia, e.deskripsi, e.foto 
+                                            FROM event e 
+                                            LEFT JOIN registrations r ON e.id = r.event_id AND r.status = 'diterima' 
+                                            GROUP BY e.id");
 
-                        // $stmt = $conn->query("SELECT event.*, COUNT(registrations.event_id) AS jumlah_pendaftar FROM event LEFT JOIN registrations ON event.id = registrations.event_id GROUP BY event.id");
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            // Menghitung kapasitas yang tersedia
-                            // $kapasitas_tersedia = $row['kapasitas'] - $row['jumlah_pendaftar'];
+                        ?>
+                        <div class="col-md-6 col-lg-4 mb-5">
+                            <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal<?php echo $row['id']; ?>">
+                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                    <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <h3 class="text-center"><?php echo $row['judul']; ?></h3>
+                                <img class="img-fluid" src="../admin/<?php echo $row['foto']; ?>" alt="<?php echo $row['judul']; ?>" />
+                            </div>
+                        </div>
 
-                            echo '<div class="col-md-6 col-lg-4 mb-5">';
-                            echo '    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal' . $row['id'] . '">';
-                            echo '        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">';
-                            echo '            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>';
-                            echo '        </div>';
-                            echo '        <h3 class="text-center">' . $row['judul'] . '</h3>';
-                            echo '        <img class="img-fluid" src="../admin/' . $row['foto'] . '" alt="' . $row['judul'] . '" />';
-                            echo '    </div>';
-                            echo '</div>';
-
-                            // Modal Detail untuk setiap event
-                            echo '<div class="portfolio-modal modal fade" id="portfolioModal' . $row['id'] . '" tabindex="-1" aria-labelledby="portfolioModal' . $row['id'] . '" aria-hidden="true">';
-                            echo '    <div class="modal-dialog modal-xl">';
-                            echo '        <div class="modal-content">';
-                            echo '            <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>';
-                            echo '            <div class="modal-body text-center pb-5">';
-                            echo '                <div class="container">';
-                            echo '                    <div class="row justify-content-center">';
-                            echo '                        <div class="col-lg-8">';
-                            echo '                            <!-- Portfolio Modal - Title-->';
-                            echo '                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">' . $row['judul'] . '</h2>';
-                            echo '                            <!-- Icon Divider-->';
-                            echo '                            <div class="divider-custom">';
-                            echo '                                <div class="divider-custom-line"></div>';
-                            echo '                                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>';
-                            echo '                                <div class="divider-custom-line"></div>';
-                            echo '                            </div>';
-                            echo '                            <!-- Portfolio Modal - Image-->';
-                            echo '                            <img class="img-fluid rounded mb-5" src="../admin/' . $row['foto'] . '" alt="' . $row['judul'] . '" />';
-                            echo '                            <!-- Portfolio Modal - Text-->';
-                            echo '                            <p class="mb-1">' . $row['deskripsi'] . '</p>';
-                            echo '                            <p class="mb-1">Lokasi: ' . $row['lokasi'] . '</p>';
-                            echo '                            <p class="mb-1">Tanggal: ' . $row['tanggal'] . '</p>';
-                            echo '                            <p class="mb-1">Kapasitas Tersedia: ' . $row['kapasitas_tersedia'] . '</p>';
-                            echo '                            <a href="pendaftaran.php?id=' . $row['id'] . '" class="btn btn-primary">';
-                            echo '                                <i class="fas fa-user-plus fa-fw"></i>';
-                            echo '                                Daftar Event';
-                            echo '                            </a>';
-                            echo '                        </div>';
-                            echo '                    </div>';
-                            echo '                </div>';
-                            echo '            </div>';
-                            echo '        </div>';
-                            echo '    </div>';
-                            echo '</div>';
+                        <div class="portfolio-modal modal fade" id="portfolioModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="portfolioModal<?php echo $row['id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                                    <div class="modal-body text-center pb-5">
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-lg-8">
+                                                    <!-- Portfolio Modal - Title-->
+                                                    <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0"><?php echo $row['judul']; ?></h2>
+                                                    <!-- Icon Divider-->
+                                                    <div class="divider-custom">
+                                                        <div class="divider-custom-line"></div>
+                                                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                                                        <div class="divider-custom-line"></div>
+                                                    </div>
+                                                    <!-- Portfolio Modal - Image-->
+                                                    <img class="img-fluid rounded mb-5" src="../admin/<?php echo $row['foto']; ?>" alt="<?php echo $row['judul']; ?>" />
+                                                    <!-- Portfolio Modal - Text-->
+                                                    <p class="mb-1"><?php echo $row['deskripsi']; ?></p>
+                                                    <p class="mb-1">Lokasi: <?php echo $row['lokasi']; ?></p>
+                                                    <p class="mb-1">Tanggal: <?php echo $row['tanggal']; ?></p>
+                                                    <p class="mb-1">Kapasitas Tersedia: <?php echo $row['kapasitas_tersedia']; ?></p>
+                                                    <form method="POST" action="pendaftaran.php">
+                                                        <input type="hidden" name="event_id" value="<?php echo $row['id']; ?>">
+                                                        <button type="submit" class="btn btn-primary">Daftar Event</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
                         }
-                    } catch (PDOException $e) {
-                        echo "Error: " . $e->getMessage();
-                    }
+                        } catch (PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                        }
                     ?>
                 </div>
+
             </div>
         </section>
 
