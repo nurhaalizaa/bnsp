@@ -171,8 +171,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                 </div>
                 <!-- About Section Content-->
                 <div class="row">
-                    <div class="col-lg-4 ms-auto"><p class="lead">Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional SASS stylesheets for easy customization.</p></div>
-                    <div class="col-lg-4 me-auto"><p class="lead">You can create your own custom avatar for the masthead, change the icon in the dividers, and add your email address to the contact form to make it fully functional!</p></div>
+                    <div class="col-lg-4 ms-auto"><p class="lead">
+                    Selamat datang di ProEvent, platform yang menghubungkan Anda dengan acara-acara terbaik di sekitar Anda. Temukan, ikuti, dan nikmati berbagai acara menarik tanpa ribet. Mulailah petualangan Anda dalam dunia acara dengan ProEvent!
+                    </p></div>
+                    <div class="col-lg-4 me-auto"><p class="lead">
+                    ProEvent membawa Anda ke dunia event dengan cara yang lebih mudah dan menyenangkan. Temukan berbagai event menarik di sekitar Anda, raih pengalaman baru, dan jadikan setiap momen berharga dengan ProEvent. Bergabunglah sekarang untuk merencanakan aktivitas seru tanpa batas!
+                    </p></div>
                 </div>
             </div>
         </section>
@@ -185,9 +189,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
                         <p class="lead mb-0">
-                            2215 John Daniel Drive
+                            Jl. jaksa agung
                             <br />
-                            Clark, MO 65243
+                            Surabaya, Indonesia
                         </p>
                     </div>
                     <!-- Footer Social Icons-->
@@ -200,11 +204,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     </div>
                     <!-- Footer About Text-->
                     <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">About Freelancer</h4>
+                        <h4 class="text-uppercase mb-4">More Info</h4>
                         <p class="lead mb-0">
-                            Freelance is a free to use, MIT licensed Bootstrap theme created by
-                            <a href="http://startbootstrap.com">Start Bootstrap</a>
-                            .
+                        Tunggu apa lagi? Segera daftar dan jadilah bagian dari pengalaman acara yang tak terlupakan bersama kami!
                         </p>
                     </div>
                 </div>

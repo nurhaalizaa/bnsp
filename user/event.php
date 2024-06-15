@@ -62,16 +62,32 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     <div class="divider-custom-line"></div>
                 </div>
                 <!-- Portfolio Grid Items-->
+                <form class="d-flex" action="event.php" method="GET">
+                    <input class="form-control me-2" type="search" placeholder="Cari event..." aria-label="Search" name="keyword">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+                
                 <div class="row justify-content-center">
-                    <?php
-                    try {
+                <?php
+                try {
+                    if (isset($_GET['keyword'])) {
+                        $keyword = '%' . $_GET['keyword'] . '%';
+                        $stmt = $conn->prepare("SELECT e.id, e.judul, e.lokasi, e.tanggal, e.kapasitas, COUNT(r.event_id) AS jumlah_pendaftar, e.kapasitas - COUNT(r.event_id) AS kapasitas_tersedia, e.deskripsi, e.foto 
+                                                FROM event e 
+                                                LEFT JOIN registrations r ON e.id = r.event_id AND r.status = 'diterima' 
+                                                WHERE e.judul LIKE :keyword
+                                                GROUP BY e.id");
+                        $stmt->bindParam(':keyword', $keyword, PDO::PARAM_STR);
+                        $stmt->execute();
+                    } else {
                         $stmt = $conn->query("SELECT e.id, e.judul, e.lokasi, e.tanggal, e.kapasitas, COUNT(r.event_id) AS jumlah_pendaftar, e.kapasitas - COUNT(r.event_id) AS kapasitas_tersedia, e.deskripsi, e.foto 
                                             FROM event e 
                                             LEFT JOIN registrations r ON e.id = r.event_id AND r.status = 'diterima' 
                                             GROUP BY e.id");
+                    }
 
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        ?>
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                ?>
                         <div class="col-md-6 col-lg-4 mb-5">
                             <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal<?php echo $row['id']; ?>">
                                 <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
@@ -127,7 +143,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
             </div>
         </section>
 
-        <!-- Footer-->
         <footer class="footer text-center">
             <div class="container">
                 <div class="row">
@@ -135,9 +150,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
                         <p class="lead mb-0">
-                            2215 John Daniel Drive
+                            Jl. jaksa agung
                             <br />
-                            Clark, MO 65243
+                            Surabaya, Indonesia
                         </p>
                     </div>
                     <!-- Footer Social Icons-->
@@ -150,25 +165,22 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     </div>
                     <!-- Footer About Text-->
                     <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">About Freelancer</h4>
+                        <h4 class="text-uppercase mb-4">More Info</h4>
                         <p class="lead mb-0">
-                            Freelance is a free to use, MIT licensed Bootstrap theme created by
-                            <a href="http://startbootstrap.com">Start Bootstrap</a>
-                            .
+                        Tunggu apa lagi? Segera daftar dan jadilah bagian dari pengalaman acara yang tak terlupakan bersama kami!
                         </p>
                     </div>
                 </div>
             </div>
         </footer>
+
         <!-- Copyright Section-->
         <div class="copyright py-4 text-center text-white">
             <div class="container">
                 <small>&copy; Copyright ProEvent 2024</small>
             </div>
-        </div>
-        
+        </div>      
 
-        
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

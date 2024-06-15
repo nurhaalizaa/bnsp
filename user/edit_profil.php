@@ -53,87 +53,83 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
         </nav>
         <!-- Contact Section-->
         <section class="page-section">
-    <div class="container">
-        <!-- Contact Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Edit Profil</h2>
-        <!-- Icon Divider-->
-        <div class="divider-custom">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-            <div class="divider-custom-line"></div>
-        </div>
-        <!-- Contact Section Form-->
-        <?php
-        $user_id = $_SESSION['user_id'];
+            <div class="container">
+                <!-- Contact Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Edit Profil</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Contact Section Form-->
+                <?php
+                $user_id = $_SESSION['user_id'];
 
-        // Query untuk mengambil informasi pribadi user dari database
-        $stmt = $conn->prepare("SELECT * FROM user WHERE id = :user_id");
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Query untuk mengambil informasi pribadi user dari database
+                $stmt = $conn->prepare("SELECT * FROM user WHERE id = :user_id");
+                $stmt->bindParam(':user_id', $user_id);
+                $stmt->execute();
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Memastikan data user ditemukan
-        if (!$user) {
-            echo "Data user tidak ditemukan.";
-            exit();
-        }
-        ?>
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-xl-7">
-                <!-- Card -->
-                <div class="card">
-                        <div class="card-body ">
-                        <form method="post" action="proses_edit.php" enctype="multipart/form-data">
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama" class="form-label fw-semibold">Nama</label>
-                                    <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $user['nama']; ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="jenis_kelamin" class="form-label fw-semibold">Jenis Kelamin</label>
-                                    <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
-                                        <option value="laki-laki" <?php echo $user['jenis_kelamin'] == 'laki-laki' ? 'selected' : ''; ?>>Laki-laki</option>
-                                        <option value="perempuan" <?php echo $user['jenis_kelamin'] == 'perempuan' ? 'selected' : ''; ?>>Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label fw-semibold">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $user['email']; ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="no_hp" class="form-label fw-semibold">No HP</label>
-                                    <input type="text" class="form-control" id="no_hp" name="no_hp" value="<?php echo $user['no_hp']; ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="alamat" class="form-label fw-semibold">Alamat</label>
-                                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?php echo $user['alamat']; ?></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label fw-semibold">Password</label>
-                                    <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="foto" class="form-label fw-semibold">Foto Profil</label>
-                                    <input type="file" class="form-control" id="foto" name="foto">
-                                    <span><?php echo $user['foto']; ?></span>
+                // Memastikan data user ditemukan
+                if (!$user) {
+                    echo "Data user tidak ditemukan.";
+                    exit();
+                }
+                ?>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-7">
+                        <!-- Card -->
+                        <div class="card">
+                                <div class="card-body ">
+                                <form method="post" action="proses_edit.php" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="nama" class="form-label fw-semibold">Nama</label>
+                                            <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $user['nama']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="jenis_kelamin" class="form-label fw-semibold">Jenis Kelamin</label>
+                                            <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
+                                                <option value="laki-laki" <?php echo $user['jenis_kelamin'] == 'laki-laki' ? 'selected' : ''; ?>>Laki-laki</option>
+                                                <option value="perempuan" <?php echo $user['jenis_kelamin'] == 'perempuan' ? 'selected' : ''; ?>>Perempuan</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label fw-semibold">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="no_hp" class="form-label fw-semibold">No HP</label>
+                                            <input type="text" class="form-control" id="no_hp" name="no_hp" value="<?php echo $user['no_hp']; ?>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="alamat" class="form-label fw-semibold">Alamat</label>
+                                            <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?php echo $user['alamat']; ?></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label fw-semibold">Password</label>
+                                            <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="foto" class="form-label fw-semibold">Foto Profil</label>
+                                            <input type="file" class="form-control" id="foto" name="foto">
+                                            <span><?php echo $user['foto']; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="about.php" type="button" class="btn btn-secondary">Close</a>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <a href="about.php" type="button" class="btn btn-secondary">Close</a>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
-                        </div>
+                        <!-- End Card -->
                     </div>
-                <!-- End Card -->
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-
-
-        
-        <!-- Footer-->
+        </section>
         <footer class="footer text-center">
             <div class="container">
                 <div class="row">
@@ -141,9 +137,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
                         <p class="lead mb-0">
-                            2215 John Daniel Drive
+                            Jl. jaksa agung
                             <br />
-                            Clark, MO 65243
+                            Surabaya, Indonesia
                         </p>
                     </div>
                     <!-- Footer Social Icons-->
@@ -156,11 +152,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     </div>
                     <!-- Footer About Text-->
                     <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">About Freelancer</h4>
+                        <h4 class="text-uppercase mb-4">More Info</h4>
                         <p class="lead mb-0">
-                            Freelance is a free to use, MIT licensed Bootstrap theme created by
-                            <a href="http://startbootstrap.com">Start Bootstrap</a>
-                            .
+                        Tunggu apa lagi? Segera daftar dan jadilah bagian dari pengalaman acara yang tak terlupakan bersama kami!
                         </p>
                     </div>
                 </div>

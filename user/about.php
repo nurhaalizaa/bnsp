@@ -53,56 +53,53 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
         </nav>
         <!-- Contact Section-->
         <section class="page-section">
-    <div class="container">
-        <!-- Contact Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Profil Saya</h2>
-        <!-- Icon Divider-->
-        <div class="divider-custom">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-            <div class="divider-custom-line"></div>
-        </div>
-        <!-- Contact Section Form-->
-        <?php
-        $user_id = $_SESSION['user_id'];
+            <div class="container">
+                <!-- Contact Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mt-5">Profil Saya</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Contact Section Form-->
+                <?php
+                $user_id = $_SESSION['user_id'];
 
-        // Query untuk mengambil informasi pribadi user dari database
-        $stmt = $conn->prepare("SELECT * FROM user WHERE id = :user_id");
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Query untuk mengambil informasi pribadi user dari database
+                $stmt = $conn->prepare("SELECT * FROM user WHERE id = :user_id");
+                $stmt->bindParam(':user_id', $user_id);
+                $stmt->execute();
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Memastikan data user ditemukan
-        if (!$user) {
-            echo "Data user tidak ditemukan.";
-            exit();
-        }
-        ?>
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-xl-7">
-                <!-- Card -->
-                <div class="card">
-                        <div class="card-body text-center">
-                        <img src="<?php echo '../admin/uploads/'.$user['foto']; ?>" class="rounded-circle border border-5 border-black" style="width: 150px;">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><?php echo htmlspecialchars($user['nama']); ?></li>
-                                <li class="list-group-item"><?php echo htmlspecialchars($user['jenis_kelamin']); ?></li>
-                                <li class="list-group-item"><?php echo htmlspecialchars($user['email']); ?></li>
-                                <li class="list-group-item"><?php echo htmlspecialchars($user['no_hp']); ?></li>
-                                <li class="list-group-item"><?php echo htmlspecialchars($user['alamat']); ?></li>
-                            </ul>
-                            <a href="edit_profil.php" class="btn btn-primary mt-3">Edit Profil</a>
-                        </div>
+                // Memastikan data user ditemukan
+                if (!$user) {
+                    echo "Data user tidak ditemukan.";
+                    exit();
+                }
+                ?>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-7">
+                        <!-- Card -->
+                        <div class="card">
+                                <div class="card-body text-center">
+                                <img src="<?php echo '../admin/uploads/'.$user['foto']; ?>" class="rounded-circle border border-5 border-black" style="width: 150px;">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><?php echo htmlspecialchars($user['nama']); ?></li>
+                                        <li class="list-group-item"><?php echo htmlspecialchars($user['jenis_kelamin']); ?></li>
+                                        <li class="list-group-item"><?php echo htmlspecialchars($user['email']); ?></li>
+                                        <li class="list-group-item"><?php echo htmlspecialchars($user['no_hp']); ?></li>
+                                        <li class="list-group-item"><?php echo htmlspecialchars($user['alamat']); ?></li>
+                                    </ul>
+                                    <a href="edit_profil.php" class="btn btn-primary mt-3">Edit Profil</a>
+                                </div>
+                            </div>
+                        <!-- End Card -->
                     </div>
-                <!-- End Card -->
+                </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-
-        
-        <!-- Footer-->
         <footer class="footer text-center">
             <div class="container">
                 <div class="row">
@@ -110,9 +107,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
                         <p class="lead mb-0">
-                            2215 John Daniel Drive
+                            Jl. jaksa agung
                             <br />
-                            Clark, MO 65243
+                            Surabaya, Indonesia
                         </p>
                     </div>
                     <!-- Footer Social Icons-->
@@ -125,16 +122,15 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
                     </div>
                     <!-- Footer About Text-->
                     <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">About Freelancer</h4>
+                        <h4 class="text-uppercase mb-4">More Info</h4>
                         <p class="lead mb-0">
-                            Freelance is a free to use, MIT licensed Bootstrap theme created by
-                            <a href="http://startbootstrap.com">Start Bootstrap</a>
-                            .
+                        Tunggu apa lagi? Segera daftar dan jadilah bagian dari pengalaman acara yang tak terlupakan bersama kami!
                         </p>
                     </div>
                 </div>
             </div>
         </footer>
+
         <!-- Copyright Section-->
         <div class="copyright py-4 text-center text-white">
             <div class="container"><small>Copyright &copy; ProEvent 2024</small></div>
