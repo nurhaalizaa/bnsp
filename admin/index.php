@@ -163,7 +163,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                   <div class="card-body p-4">
                       <div class="row">
                           <?php
-                          $stmt = $conn->query("SELECT * FROM user LIMIT 6");
+                          $stmt = $conn->query("SELECT * FROM user where role != 'admin' LIMIT 6");
 
                           // Loop melalui setiap baris data peserta
                           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

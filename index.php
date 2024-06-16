@@ -176,7 +176,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
       <!-- services section end -->
       <!-- about sectuion start -->
-      <div class="about_section layout_padding"  id="about">
+      <div class="about_section layout_padding mb-5"  id="about">
          <div class="container">
             <div class="row">
                <div class="col-md-6">
@@ -188,9 +188,6 @@ if (isset($_SESSION['user_id'])) {
                </div>
                <div class="col-md-6">
                   <div class="about_img">
-                     <div class="video_bt">
-                        <div class="play_icon"><img src="assets/images/play-icon.png"></div>
-                     </div>
                   </div>
                </div>
             </div>

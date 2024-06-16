@@ -301,7 +301,7 @@ button {
 .header_section {
     width: 100%;
     float: left;
-    background-image: url(../images/banner-bg.png);
+    background-image: url(../images/banner.jpg);
     height: auto;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -527,11 +527,15 @@ button {
 .about_img {
     width: 100%;
     float: left;
-    background-image: url(../images/about-img.png);
+    background-image: url(../images/about.jpg);
     height: auto;
+    min-height: 300px;
     background-size: cover;
-    padding: 0px 0px 0px 0px;
+    background-position: center;
+    padding: 0;
+    overflow: hidden;
 }
+
 
 .video_bt {
     width: 100%;
